@@ -12,3 +12,14 @@ let mix = require("laravel-mix");
  */
 
 mix.js("resources/assets/js/app.js", "public/js");
+
+// mix.webpackConfig({
+//   module: {
+//     rules: [
+//       {
+//         test: /\.css$/,
+//         use: ["style-loader", "css-loader"]
+//       }
+//     ]
+//   }
+// });

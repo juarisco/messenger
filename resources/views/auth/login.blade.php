@@ -8,6 +8,8 @@
                 <div class="panel-heading">Login</div>
 
                 <div class="panel-body">
+
+                        <b-alert show>Por favor ingresa tus datos</b-alert>
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
 
