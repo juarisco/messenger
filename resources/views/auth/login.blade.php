@@ -9,75 +9,41 @@
 
             <b-card title="Inicio de sesión">
                 <b-alert show>Por favor ingresa tus datos</b-alert>
-                <p class="card-text">Header and footers using props.</p>
-                <b-button href="#"
-                        variant="primary">Go somewhere</b-button>
                 
-                <b-form class="form-horizontal" method="POST" action="{{ route('login') }}">
+                <b-form method="POST" action="{{ route('login') }}">
                     {{ csrf_field() }}
 
-                    <b-form-group id="exampleInputGroup1"
-                                    label="Correo electrónico:"
-                                    label-for="email"
-                                    description="Nunca compartiremos tu correo. Está seguro con nosotros.">
-                        <b-form-input id="email"
-                                    type="email"
-                                    name="email"
-                                    value="{{ old('email') }}"
-                                    placeholder="examplo@email.com"
-                                    required
-                                    autofocus>
+                    <b-form-group
+                        label="Correo electrónico" label-for="email"
+                        description="Nunca compartiremos tu correo. Está seguro con nosotros.">
+
+                        <b-form-input type="email"
+                            id="email" name="email"
+                            value="{{ old('email') }}" required autofocus
+                            placeholder="example@email.com">
                         </b-form-input>
                     </b-form-group>
+
+                    <b-form-group label="Contraseña" label-for="password">
+
+                        <b-form-input type="password"
+                            id="password" name="password"
+                            value="{{ old('password') }}" required>
+                        </b-form-input>
+                    </b-form-group>
+
+                    <b-form-group>
+                        <b-form-checkbox 
+                            name="remember" 
+                            {{ old('remember') ? 'checked="true"' : '' }}>
+                            Recordar sesión
+                        </b-form-checkbox>
+                    </b-form-group>
+
+                    <b-button type="submit" variant="primary">Ingresar</b-button>
+                    
+                    <b-button href="{{ route('password.request') }}" variant="link">¿Olvidaste tu contraseña?</b-button>
     
-                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-    
-                        <div class="col-md-6">
-                            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-    
-                            @if ($errors->has('email'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-    
-                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                        <label for="password" class="col-md-4 control-label">Password</label>
-    
-                        <div class="col-md-6">
-                            <input id="password" type="password" class="form-control" name="password" required>
-    
-                            @if ($errors->has('password'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                    </div>
-    
-                    <div class="form-group">
-                        <div class="col-md-6 col-md-offset-4">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="form-group">
-                        <div class="col-md-8 col-md-offset-4">
-                            <button type="submit" class="btn btn-primary">
-                                Login
-                            </button>
-    
-                            <a class="btn btn-link" href="{{ route('password.request') }}">
-                                Forgot Your Password?
-                            </a>
-                        </div>
-                    </div>
                 </b-form>
 
             </b-card>
