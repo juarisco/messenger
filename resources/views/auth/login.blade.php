@@ -7,7 +7,7 @@
     <b-row align-h="center">
         <b-col cols="8">
 
-            <b-card title="Inicio de sesión">
+            <b-card title="Inicio de sesión" class="my-4">
                 <b-alert show>Por favor ingresa tus datos</b-alert>
                 
                 <b-form method="POST" action="{{ route('login') }}">

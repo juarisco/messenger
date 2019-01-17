@@ -13,6 +13,10 @@
     <!-- Styles -->
 </head>
 <body>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        {{ csrf_field() }}
+    </form>
+    
     <div id="app">
 
         <b-navbar toggleable type="dark" variant="primary">
@@ -22,31 +26,19 @@
                 <!-- Right Side Of Navbar -->
                 <b-navbar-nav class="ml-auto">
                     <!-- Authentication Links -->
-                    {{-- @guest
+                    @guest
                         <b-nav-item href="{{ route('login') }}">Ingresar</b-nav-item>
                         <b-nav-item href="{{ route('register') }}">Registro</b-nav-item>
-                    @else --}}
+                    @else
                         <!-- Navbar dropdowns -->
-                        <b-nav-item-dropdown text="Username" right>
-                            <b-dropdown-item href="#">Cerrar sesión</b-dropdown-item>
+                        <b-nav-item-dropdown text="{{ auth()->user()->name }}" right>
+                            <b-dropdown-item  @click="logout">Cerrar sesión</b-dropdown-item>
                         </b-nav-item-dropdown>
-                    {{-- @endguest --}}
+                    @endguest
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar> 
                 
-        {{-- <li>
-            <a href="{{ route('logout') }}"
-                onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
-                Logout
-            </a>
-
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                {{ csrf_field() }}
-            </form>
-        </li> --}}
-
         @yield('content')
     </div>
 
