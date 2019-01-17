@@ -14,8 +14,7 @@
                     {{ csrf_field() }}
 
                     <b-form-group
-                        label="Correo electrónico" label-for="email"
-                        description="Nunca compartiremos tu correo. Está seguro con nosotros.">
+                        label="Correo electrónico" label-for="email">
 
                         <b-form-input type="email"
                             id="email" name="email"
@@ -27,8 +26,7 @@
                     <b-form-group label="Contraseña" label-for="password">
 
                         <b-form-input type="password"
-                            id="password" name="password"
-                            value="{{ old('password') }}" required>
+                            id="password" name="password" required>
                         </b-form-input>
                     </b-form-group>
 
