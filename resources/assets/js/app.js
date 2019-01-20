@@ -18,6 +18,11 @@ Vue.use(BootstrapVue);
  */
 
 Vue.component(
+  "message-conversation-component",
+  require("./components/MessageConversationComponent.vue")
+);
+
+Vue.component(
   "contact-component",
   require("./components/ContactComponent.vue")
 );

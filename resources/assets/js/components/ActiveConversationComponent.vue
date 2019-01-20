@@ -7,34 +7,12 @@
         title="Conversación activa"
         class="h-100"
       >
-        <b-media vertical-align="center" class="mb-2">
-          <b-img
-            rounded="circle"
-            slot="aside"
-            blank
-            blank-color="#ccc"
-            width="48"
-            alt="placeholder"
-          />
-          <b-card>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante
-            sollicitudin.
-          </b-card>
-        </b-media>
-        <b-media right-align vertical-align="center" class="mb-2">
-          <b-img
-            rounded="circle"
-            slot="aside"
-            blank
-            blank-color="#ccc"
-            width="48"
-            alt="placeholder"
-          />
-          <b-card>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante
-            sollicitudin.
-          </b-card>
-        </b-media>
+        <message-conversation-component>
+          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante
+          sollicitudin.
+        </message-conversation-component>
+
+        <message-conversation-component written-by-me>Nulla vel metus scelerisque ante sollicitudin.</message-conversation-component>
 
         <div slot="footer">
           <b-form class="mb-0">
