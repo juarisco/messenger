@@ -14,7 +14,7 @@
         >{{ message.content }}</message-conversation-component>
 
         <div slot="footer">
-          <b-form class="mb-0" @submit.prevent="postMessage">
+          <b-form class="mb-0" @submit.prevent="postMessage" autocomplete="off">
             <b-input-group>
               <b-form-input
                 class="text-center"
