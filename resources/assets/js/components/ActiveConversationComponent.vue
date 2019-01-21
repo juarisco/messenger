@@ -14,12 +14,17 @@
         >{{ message.content }}</message-conversation-component>
 
         <div slot="footer">
-          <b-form class="mb-0">
+          <b-form class="mb-0" @submit.prevent="postMessage">
             <b-input-group>
-              <b-form-input class="text-center" type="text" placeholder="Escribe un mensaje ..."></b-form-input>
+              <b-form-input
+                class="text-center"
+                type="text"
+                v-model="newMessage"
+                placeholder="Escribe un mensaje ..."
+              ></b-form-input>
 
               <b-input-group-append>
-                <b-button variant="primary">Enviar</b-button>
+                <b-button type="submit" variant="primary">Enviar</b-button>
               </b-input-group-append>
             </b-input-group>
           </b-form>
@@ -47,15 +52,32 @@
 export default {
   data() {
     return {
-      messages: []
+      messages: [],
+      newMessage: ""
     };
   },
   mounted() {
     // console.log("Component mounted.");
-    axios.get("/api/messages").then(response => {
-      console.log(response.data);
-      this.messages = response.data;
-    });
+    this.getMessages();
+  },
+  methods: {
+    getMessages() {
+      axios.get("/api/messages").then(response => {
+        // console.log(response.data);
+        this.messages = response.data;
+      });
+    },
+    postMessage() {
+      const params = {
+        to_id: 2,
+        content: this.newMessage
+      };
+      axios.post("/api/messages", params).then(response => {
+        // console.log(response.data);
+        this.newMessage = "";
+        this.getMessages();
+      });
+    }
   }
 };
 </script>
