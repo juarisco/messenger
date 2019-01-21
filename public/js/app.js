@@ -33685,7 +33685,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -33730,17 +33729,16 @@ var render = function() {
               }
             },
             [
-              _c("message-conversation-component", [
-                _vm._v(
-                  "\n        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante\n        sollicitudin.\n      "
+              _vm._l(_vm.messages, function(message) {
+                return _c(
+                  "message-conversation-component",
+                  {
+                    key: message.id,
+                    attrs: { "written-by-me": message.written_by_me }
+                  },
+                  [_vm._v(_vm._s(message.content))]
                 )
-              ]),
-              _vm._v(" "),
-              _c(
-                "message-conversation-component",
-                { attrs: { "written-by-me": "" } },
-                [_vm._v("Nulla vel metus scelerisque ante sollicitudin.")]
-              ),
+              }),
               _vm._v(" "),
               _c(
                 "div",
@@ -33782,7 +33780,7 @@ var render = function() {
                 1
               )
             ],
-            1
+            2
           )
         ],
         1
