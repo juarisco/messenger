@@ -33689,10 +33689,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      messages: []
+    };
   },
   mounted: function mounted() {
-    console.log("Component mounted.");
+    var _this = this;
+
+    // console.log("Component mounted.");
+    axios.get("/api/messages").then(function (response) {
+      console.log(response.data);
+      _this.messages = response.data;
+    });
   }
 });
 

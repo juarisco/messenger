@@ -47,10 +47,16 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      messages: []
+    };
   },
   mounted() {
-    console.log("Component mounted.");
+    // console.log("Component mounted.");
+    axios.get("/api/messages").then(response => {
+      console.log(response.data);
+      this.messages = response.data;
+    });
   }
 };
 </script>
