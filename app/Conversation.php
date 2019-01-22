@@ -10,7 +10,7 @@ class Conversation extends Model
 
     public function getContactNameAttribute()
     {
-        return $this->contact->name;
+        return $this->contact()->first(['name'])->name;
     }
 
     public function contact()
