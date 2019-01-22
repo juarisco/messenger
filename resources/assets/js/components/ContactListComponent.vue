@@ -39,7 +39,15 @@ export default {
     return {};
   },
   mounted() {
-    console.log("Component mounted.");
+    // console.log("Component mounted.");
+    this.getConversations();
+  },
+  methods: {
+    getConversations() {
+      axios.get("/api/conversations").then(response => {
+        console.log(response.data);
+      });
+    }
   }
 };
 </script>

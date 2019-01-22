@@ -33535,7 +33535,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {};
   },
   mounted: function mounted() {
-    console.log("Component mounted.");
+    // console.log("Component mounted.");
+    this.getConversations();
+  },
+
+  methods: {
+    getConversations: function getConversations() {
+      axios.get("/api/conversations").then(function (response) {
+        console.log(response.data);
+      });
+    }
   }
 });
 
