@@ -4,39 +4,24 @@
       <b-form-input class="text-center" type="text" placeholder="Buscar contacto ..."></b-form-input>
     </b-form>
     <b-list-group>
-      <contact-component variant="dark"></contact-component>
-      <contact-component variant></contact-component>
-      <contact-component variant="secondary"></contact-component>
+      <contact-component
+        v-for="conversation in conversations"
+        :key="conversation.id"
+        :conversation="conversation"
+      ></contact-component>
+      <!-- <contact-component variant="dark"></contact-component>
+      <contact-component></contact-component>
+      <contact-component variant="secondary"></contact-component>-->
     </b-list-group>
   </div>
-  <!-- <b-list-group-item :variant="variant">
-    <b-row class="p-2" align-h="center">
-      <b-col cols="12" md="3" class="text-center">
-        <b-img
-          rounded="circle"
-          blank
-          width="60"
-          height="60"
-          blank-color="#777"
-          alt="img"
-          class="m-1"
-        />
-      </b-col>
-      <b-col cols="6" align-self="center" class="d-none d-md-block">
-        <p class="mb-1">{{ name }}</p>
-        <p class="text-muted small mb-1">{{ lastMessage }}</p>
-      </b-col>
-      <b-col cols="3" class="d-none d-md-block">
-        <p class="text-muted small">{{ lastTime }}</p>
-      </b-col>
-    </b-row>
-  </b-list-group-item>-->
 </template>
 
 <script>
 export default {
   data() {
-    return {};
+    return {
+      conversations: []
+    };
   },
   mounted() {
     // console.log("Component mounted.");
@@ -45,7 +30,8 @@ export default {
   methods: {
     getConversations() {
       axios.get("/api/conversations").then(response => {
-        console.log(response.data);
+        // console.log(response.data);
+        this.conversations = response.data;
       });
     }
   }
