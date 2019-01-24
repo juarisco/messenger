@@ -8,6 +8,7 @@
         <active-conversation-component
           v-if="selectedConversation"
           :contact-id="selectedConversation.contact_id"
+          :contact-name="selectedConversation.contact_name"
         ></active-conversation-component>
       </b-col>
     </b-row>

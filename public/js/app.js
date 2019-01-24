@@ -33245,7 +33245,7 @@ exports = module.exports = __webpack_require__(11)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -33533,6 +33533,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -33586,7 +33587,10 @@ var render = function() {
             [
               _vm.selectedConversation
                 ? _c("active-conversation-component", {
-                    attrs: { "contact-id": _vm.selectedConversation.contact_id }
+                    attrs: {
+                      "contact-id": _vm.selectedConversation.contact_id,
+                      "contact-name": _vm.selectedConversation.contact_name
+                    }
                   })
                 : _vm._e()
             ],
@@ -34152,7 +34156,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    contactId: Number
+    contactId: Number,
+    contactName: String
   },
   data: function data() {
     return {
@@ -34314,7 +34319,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("p", [_vm._v("Usuario seleccionado")]),
+          _c("p", [_vm._v(_vm._s(_vm.contactName))]),
           _vm._v(" "),
           _c("hr"),
           _vm._v(" "),
