@@ -5,7 +5,10 @@
         <contact-list-component @conversationSelected="changeActiveConversation($event)"></contact-list-component>
       </b-col>
       <b-col cols="8">
-        <active-conversation-component></active-conversation-component>
+        <active-conversation-component
+          v-if="selectedConversation"
+          :contact-id="selectedConversation.contact_id"
+        ></active-conversation-component>
       </b-col>
     </b-row>
   </b-container>
@@ -13,9 +16,15 @@
 
 <script>
 export default {
+  data() {
+    return {
+      selectedConversation: null
+    };
+  },
   methods: {
     changeActiveConversation(conversation) {
-      console.log("Nueva conversación seleccionada", conversation);
+      // console.log("Nueva conversación seleccionada", conversation);
+      this.selectedConversation = conversation;
     }
   }
 };

@@ -33245,7 +33245,7 @@ exports = module.exports = __webpack_require__(11)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -33530,11 +33530,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      selectedConversation: null
+    };
+  },
+
   methods: {
     changeActiveConversation: function changeActiveConversation(conversation) {
-      console.log("Nueva conversación seleccionada", conversation);
+      // console.log("Nueva conversación seleccionada", conversation);
+      this.selectedConversation = conversation;
     }
   }
 });
@@ -33573,7 +33583,13 @@ var render = function() {
           _c(
             "b-col",
             { attrs: { cols: "8" } },
-            [_c("active-conversation-component")],
+            [
+              _vm.selectedConversation
+                ? _c("active-conversation-component", {
+                    attrs: { "contact-id": _vm.selectedConversation.contact_id }
+                  })
+                : _vm._e()
+            ],
             1
           )
         ],
@@ -34135,11 +34151,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    contactId: Number
+  },
   data: function data() {
     return {
       messages: [],
-      newMessage: "",
-      contactId: 2
+      newMessage: ""
+      // contactId: 2
     };
   },
   mounted: function mounted() {
