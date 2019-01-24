@@ -34188,6 +34188,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this2.getMessages();
       });
     }
+  },
+  watch: {
+    contactId: function contactId(value) {
+      console.log("contactId => " + this.contactId);
+      this.getMessages();
+    }
   }
 });
 
