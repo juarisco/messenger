@@ -22,6 +22,11 @@ export default {
       selectedConversation: null
     };
   },
+  mounted() {
+    Echo.channel("example").listen("MessageSent", e => {
+      console.log(e);
+    });
+  },
   methods: {
     changeActiveConversation(conversation) {
       // console.log("Nueva conversación seleccionada", conversation);
