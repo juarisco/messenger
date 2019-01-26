@@ -43563,7 +43563,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -43625,6 +43625,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -43639,11 +43640,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mounted: function mounted() {
     var _this = this;
 
-    Echo.channel("example").listen("MessageSent", function (data) {
+    Echo.channel("users." + this.userId).listen("MessageSent", function (data) {
       var message = data.message;
-      message.written_by_me = _this.userId == message.from_id;
       console.log(message);
-      _this.messages.push(message);
+      _this.addMessage(message);
     });
   },
 
@@ -43660,6 +43660,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log(response.data);
         _this2.messages = response.data;
       });
+    },
+    addMessage: function addMessage(message) {
+      message.written_by_me = this.userId == message.from_id;
+      this.messages.push(message);
     }
   }
 });
@@ -43705,6 +43709,11 @@ var render = function() {
                       "contact-id": _vm.selectedConversation.contact_id,
                       "contact-name": _vm.selectedConversation.contact_name,
                       messages: _vm.messages
+                    },
+                    on: {
+                      messageCreated: function($event) {
+                        _vm.addMessage($event)
+                      }
                     }
                   })
                 : _vm._e()
@@ -44342,6 +44351,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       axios.post("/api/messages", params).then(function (response) {
         // console.log(response.data);
         _this.newMessage = "";
+        _this.$emit("messageCreated", response.data.message);
       });
     },
     scrollToBottom: function scrollToBottom() {

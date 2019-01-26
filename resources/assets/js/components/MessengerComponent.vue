@@ -10,6 +10,7 @@
           :contact-id="selectedConversation.contact_id"
           :contact-name="selectedConversation.contact_name"
           :messages="messages"
+          @messageCreated="addMessage($event)"
         ></active-conversation-component>
       </b-col>
     </b-row>
@@ -28,11 +29,10 @@ export default {
     };
   },
   mounted() {
-    Echo.channel("example").listen("MessageSent", data => {
+    Echo.channel(`users.${this.userId}`).listen("MessageSent", data => {
       const message = data.message;
-      message.written_by_me = this.userId == message.from_id;
       console.log(message);
-      this.messages.push(message);
+      this.addMessage(message);
     });
   },
   methods: {
@@ -50,6 +50,10 @@ export default {
           console.log(response.data);
           this.messages = response.data;
         });
+    },
+    addMessage(message) {
+      message.written_by_me = this.userId == message.from_id;
+      this.messages.push(message);
     }
   }
 };

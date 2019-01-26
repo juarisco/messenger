@@ -75,6 +75,7 @@ export default {
       axios.post("/api/messages", params).then(response => {
         // console.log(response.data);
         this.newMessage = "";
+        this.$emit("messageCreated", response.data.message);
       });
     },
     scrollToBottom() {
