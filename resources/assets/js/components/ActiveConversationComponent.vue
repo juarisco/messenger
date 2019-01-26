@@ -76,7 +76,15 @@ export default {
         // console.log(response.data);
         this.newMessage = "";
       });
+    },
+    scrollToBottom() {
+      const el = document.querySelector(".card-body-scroll");
+      el.scrollTop = el.scrollHeight;
     }
+  },
+  updated() {
+    this.scrollToBottom();
+    console.log("messages ha cambiado");
   }
 };
 </script>
