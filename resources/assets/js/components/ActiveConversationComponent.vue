@@ -52,28 +52,16 @@
 export default {
   props: {
     contactId: Number,
-    contactName: String
+    contactName: String,
+    messages: Array
   },
   data() {
     return {
-      messages: [],
       newMessage: ""
-      // contactId: 2
     };
   },
-  mounted() {
-    // console.log("Component mounted.");
-    this.getMessages();
-  },
+  mounted() {},
   methods: {
-    getMessages() {
-      axios
-        .get(`/api/messages/?contact_id=${this.contactId}`)
-        .then(response => {
-          // console.log(response.data);
-          this.messages = response.data;
-        });
-    },
     postMessage() {
       const params = {
         to_id: this.contactId,
@@ -82,14 +70,7 @@ export default {
       axios.post("/api/messages", params).then(response => {
         // console.log(response.data);
         this.newMessage = "";
-        this.getMessages();
       });
-    }
-  },
-  watch: {
-    contactId(value) {
-      console.log(`contactId => ${this.contactId}`);
-      this.getMessages();
     }
   }
 };

@@ -43335,7 +43335,7 @@ exports = module.exports = __webpack_require__(11)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -43624,16 +43624,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    userId: Number
+  },
   data: function data() {
     return {
-      selectedConversation: null
+      selectedConversation: null,
+      messages: []
     };
   },
   mounted: function mounted() {
-    Echo.channel("example").listen("MessageSent", function (e) {
-      console.log(e);
+    var _this = this;
+
+    Echo.channel("example").listen("MessageSent", function (data) {
+      var message = data.message;
+      message.written_by_me = _this.userId == message.from_id;
+      console.log(message);
+      _this.messages.push(message);
     });
   },
 
@@ -43641,6 +43651,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     changeActiveConversation: function changeActiveConversation(conversation) {
       // console.log("Nueva conversación seleccionada", conversation);
       this.selectedConversation = conversation;
+      this.getMessages();
+    },
+    getMessages: function getMessages() {
+      var _this2 = this;
+
+      axios.get("/api/messages/?contact_id=" + this.selectedConversation.contact_id).then(function (response) {
+        console.log(response.data);
+        _this2.messages = response.data;
+      });
     }
   }
 });
@@ -43684,7 +43703,8 @@ var render = function() {
                 ? _c("active-conversation-component", {
                     attrs: {
                       "contact-id": _vm.selectedConversation.contact_id,
-                      "contact-name": _vm.selectedConversation.contact_name
+                      "contact-name": _vm.selectedConversation.contact_name,
+                      messages: _vm.messages
                     }
                   })
                 : _vm._e()
@@ -44252,31 +44272,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     contactId: Number,
-    contactName: String
+    contactName: String,
+    messages: Array
   },
   data: function data() {
     return {
-      messages: [],
       newMessage: ""
-      // contactId: 2
     };
   },
-  mounted: function mounted() {
-    // console.log("Component mounted.");
-    this.getMessages();
-  },
+  mounted: function mounted() {},
 
   methods: {
-    getMessages: function getMessages() {
-      var _this = this;
-
-      axios.get("/api/messages/?contact_id=" + this.contactId).then(function (response) {
-        // console.log(response.data);
-        _this.messages = response.data;
-      });
-    },
     postMessage: function postMessage() {
-      var _this2 = this;
+      var _this = this;
 
       var params = {
         to_id: this.contactId,
@@ -44284,15 +44292,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       };
       axios.post("/api/messages", params).then(function (response) {
         // console.log(response.data);
-        _this2.newMessage = "";
-        _this2.getMessages();
+        _this.newMessage = "";
       });
-    }
-  },
-  watch: {
-    contactId: function contactId(value) {
-      console.log("contactId => " + this.contactId);
-      this.getMessages();
     }
   }
 });
