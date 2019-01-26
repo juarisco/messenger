@@ -43563,7 +43563,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -43641,8 +43641,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     var _this = this;
 
     Echo.channel("users." + this.userId).listen("MessageSent", function (data) {
+      // console.log(message);
       var message = data.message;
-      console.log(message);
+      message.written_by_me = false;
       _this.addMessage(message);
     });
   },
@@ -43662,8 +43663,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     addMessage: function addMessage(message) {
-      message.written_by_me = this.userId == message.from_id;
-      this.messages.push(message);
+      if (this.selectedConversation.contact_id == message.to_id) {
+        this.messages.push(message);
+      }
     }
   }
 });
@@ -44349,9 +44351,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         content: this.newMessage
       };
       axios.post("/api/messages", params).then(function (response) {
-        // console.log(response.data);
-        _this.newMessage = "";
-        _this.$emit("messageCreated", response.data.message);
+        if (response.data.success) {
+          // console.log(response.data);
+          _this.newMessage = "";
+          var message = response.data.message;
+          message.written_by_me = true;
+          _this.$emit("messageCreated", message);
+        }
       });
     },
     scrollToBottom: function scrollToBottom() {

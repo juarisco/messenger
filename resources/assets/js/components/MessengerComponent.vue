@@ -30,8 +30,9 @@ export default {
   },
   mounted() {
     Echo.channel(`users.${this.userId}`).listen("MessageSent", data => {
+      // console.log(message);
       const message = data.message;
-      console.log(message);
+      message.written_by_me = false;
       this.addMessage(message);
     });
   },
@@ -52,8 +53,9 @@ export default {
         });
     },
     addMessage(message) {
-      message.written_by_me = this.userId == message.from_id;
-      this.messages.push(message);
+      if (this.selectedConversation.contact_id == message.to_id) {
+        this.messages.push(message);
+      }
     }
   }
 };

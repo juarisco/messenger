@@ -73,9 +73,13 @@ export default {
         content: this.newMessage
       };
       axios.post("/api/messages", params).then(response => {
-        // console.log(response.data);
-        this.newMessage = "";
-        this.$emit("messageCreated", response.data.message);
+        if (response.data.success) {
+          // console.log(response.data);
+          this.newMessage = "";
+          const message = response.data.message;
+          message.written_by_me = true;
+          this.$emit("messageCreated", message);
+        }
       });
     },
     scrollToBottom() {
