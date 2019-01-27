@@ -2,7 +2,10 @@
   <b-container fluid style="height: calc(100vh - 56px);">
     <b-row no-gutters>
       <b-col cols="4">
-        <contact-list-component @conversationSelected="changeActiveConversation($event)"></contact-list-component>
+        <contact-list-component
+          @conversationSelected="changeActiveConversation($event)"
+          :conversations="conversations"
+        ></contact-list-component>
       </b-col>
       <b-col cols="8">
         <active-conversation-component
@@ -25,14 +28,18 @@ export default {
   data() {
     return {
       selectedConversation: null,
-      messages: []
+      messages: [],
+      conversations: []
     };
   },
   mounted() {
+    this.getConversations();
+
     Echo.channel(`users.${this.userId}`).listen("MessageSent", data => {
       // console.log(message);
       const message = data.message;
       message.written_by_me = false;
+
       this.addMessage(message);
     });
   },
@@ -53,9 +60,30 @@ export default {
         });
     },
     addMessage(message) {
-      if (this.selectedConversation.contact_id == message.to_id) {
+      const conversation = this.conversations.find(conversation => {
+        return (
+          conversation.contact_id == message.from_id ||
+          conversation.contact_id == message.to_id
+        );
+      });
+
+      const author =
+        this.userId === message.from_id ? "Tú" : conversation.contact_name;
+
+      conversation.last_message = `${author}: ${message.content}`;
+      conversation.last_time = message.created_at;
+
+      if (
+        this.selectedConversation.contact_id == message.from_id ||
+        this.selectedConversation.contact_id == message.to_id
+      )
         this.messages.push(message);
-      }
+    },
+    getConversations() {
+      axios.get("/api/conversations").then(response => {
+        // console.log(response.data);
+        this.conversations = response.data;
+      });
     }
   }
 };

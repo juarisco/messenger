@@ -43563,7 +43563,7 @@ exports = module.exports = __webpack_require__(10)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -43626,6 +43626,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -43634,16 +43637,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       selectedConversation: null,
-      messages: []
+      messages: [],
+      conversations: []
     };
   },
   mounted: function mounted() {
     var _this = this;
 
+    this.getConversations();
+
     Echo.channel("users." + this.userId).listen("MessageSent", function (data) {
       // console.log(message);
       var message = data.message;
       message.written_by_me = false;
+
       _this.addMessage(message);
     });
   },
@@ -43663,9 +43670,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     addMessage: function addMessage(message) {
-      if (this.selectedConversation.contact_id == message.to_id) {
-        this.messages.push(message);
-      }
+      var conversation = this.conversations.find(function (conversation) {
+        return conversation.contact_id == message.from_id || conversation.contact_id == message.to_id;
+      });
+
+      var author = this.userId === message.from_id ? "Tú" : conversation.contact_name;
+
+      conversation.last_message = author + ": " + message.content;
+      conversation.last_time = message.created_at;
+
+      if (this.selectedConversation.contact_id == message.from_id || this.selectedConversation.contact_id == message.to_id) this.messages.push(message);
+    },
+    getConversations: function getConversations() {
+      var _this3 = this;
+
+      axios.get("/api/conversations").then(function (response) {
+        // console.log(response.data);
+        _this3.conversations = response.data;
+      });
     }
   }
 });
@@ -43691,6 +43713,7 @@ var render = function() {
             { attrs: { cols: "4" } },
             [
               _c("contact-list-component", {
+                attrs: { conversations: _vm.conversations },
                 on: {
                   conversationSelected: function($event) {
                     _vm.changeActiveConversation($event)
@@ -44098,25 +44121,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    conversations: Array
+  },
   data: function data() {
-    return {
-      conversations: []
-    };
+    return {};
   },
   mounted: function mounted() {
     // console.log("Component mounted.");
-    this.getConversations();
   },
 
   methods: {
-    getConversations: function getConversations() {
-      var _this = this;
-
-      axios.get("/api/conversations").then(function (response) {
-        // console.log(response.data);
-        _this.conversations = response.data;
-      });
-    },
     selectConversation: function selectConversation(conversation) {
       // console.log(conversation);
       this.$emit("conversationSelected", conversation);
