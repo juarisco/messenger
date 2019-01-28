@@ -35,7 +35,7 @@ export default {
   mounted() {
     this.getConversations();
 
-    Echo.channel(`users.${this.userId}`).listen("MessageSent", data => {
+    Echo.private(`users.${this.userId}`).listen("MessageSent", data => {
       // console.log(message);
       const message = data.message;
       message.written_by_me = false;
