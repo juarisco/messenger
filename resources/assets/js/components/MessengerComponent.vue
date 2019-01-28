@@ -42,6 +42,17 @@ export default {
 
       this.addMessage(message);
     });
+
+    Echo.join("messenger")
+      .here(users => {
+        users.forEach(user => this.changeStatus(user, true));
+      })
+      .joining(user => {
+        this.changeStatus(user, true);
+      })
+      .leaving(user => {
+        this.changeStatus(user, false);
+      });
   },
   methods: {
     changeActiveConversation(conversation) {
@@ -84,6 +95,12 @@ export default {
         // console.log(response.data);
         this.conversations = response.data;
       });
+    },
+    changeStatus(user, status) {
+      const index = this.conversations.findIndex(conversation => {
+        return conversation.contact_id == user.id;
+      });
+      if (index >= 0) this.$set(this.conversations[index], "online", status);
     }
   }
 };
