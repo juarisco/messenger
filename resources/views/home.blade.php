@@ -2,6 +2,6 @@
 
 @section('content')
 
-<messenger-component :user-id="{{ auth()->id() }}"/>
+<messenger-component :user="{{ auth()->user() }}"/>
 
 @endsection
