@@ -17,6 +17,11 @@ Vue.use(BootstrapVue);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component(
+  "profile-form-component",
+  require("./components/ProfileFormComponent.vue")
+);
+
 Vue.component("status-component", require("./components/StatusComponent.vue"));
 
 Vue.component(

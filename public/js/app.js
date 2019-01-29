@@ -26948,6 +26948,8 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_bootstrap_vue__["a" /* default */]);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component("profile-form-component", __webpack_require__(374));
+
 Vue.component("status-component", __webpack_require__(349));
 
 Vue.component("messenger-component", __webpack_require__(355));
@@ -61844,6 +61846,265 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-febb4826", module.exports)
+  }
+}
+
+/***/ }),
+/* 374 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(18)
+/* script */
+var __vue_script__ = __webpack_require__(375)
+/* template */
+var __vue_template__ = __webpack_require__(376)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ProfileFormComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-441af827", Component.options)
+  } else {
+    hotAPI.reload("data-v-441af827", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 375 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    user: Object,
+    csrfToken: String
+  },
+  data: function data() {
+    return {};
+  },
+
+  computed: {
+    image: function image() {
+      return "/users/" + this.user.image;
+    }
+  }
+});
+
+/***/ }),
+/* 376 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-container",
+    [
+      _c(
+        "b-form",
+        {
+          staticClass: "m-3",
+          attrs: { action: "", method: "post", enctype: "multipart/form-data" }
+        },
+        [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.csrfToken,
+                expression: "csrfToken"
+              }
+            ],
+            attrs: { type: "hidden", name: "_token" },
+            domProps: { value: _vm.csrfToken },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.csrfToken = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "b-form-group",
+            { attrs: { label: "Correo electrónico:" } },
+            [
+              _c("b-form-input", {
+                attrs: {
+                  type: "email",
+                  disabled: "",
+                  name: "email",
+                  placeholder: "Ingresar tu correo"
+                },
+                model: {
+                  value: _vm.user.email,
+                  callback: function($$v) {
+                    _vm.$set(_vm.user, "email", $$v)
+                  },
+                  expression: "user.email"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-form-group",
+            { attrs: { label: "Nombre:" } },
+            [
+              _c("b-form-input", {
+                attrs: {
+                  type: "text",
+                  name: "name",
+                  required: "",
+                  placeholder: "Ingresa tu nombre"
+                },
+                model: {
+                  value: _vm.user.name,
+                  callback: function($$v) {
+                    _vm.$set(_vm.user, "name", $$v)
+                  },
+                  expression: "user.name"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-form-group",
+            {
+              attrs: { label: "Nueva contraseña (sólo si se desea modificar):" }
+            },
+            [
+              _c("b-form-input", {
+                attrs: {
+                  type: "password",
+                  name: "password",
+                  placeholder: "Ingresa una nueva contraseña"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-form-group",
+            {
+              attrs: { label: "Imagen de perfil (sólo si se desea modificar):" }
+            },
+            [
+              _c("b-img", {
+                staticClass: "m-1",
+                attrs: {
+                  src: _vm.image,
+                  rounded: "circle",
+                  width: "60",
+                  height: "60",
+                  alt: "Imagen actual",
+                  title: "Imagen de perfil"
+                }
+              }),
+              _vm._v(" "),
+              _c("b-form-file", {
+                attrs: {
+                  name: "image",
+                  placeholder: "Selecciona una nueva imagen"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("b-button", { attrs: { type: "submit", variant: "primary" } }, [
+            _vm._v("Guardar cambios")
+          ])
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-441af827", module.exports)
   }
 }
 
