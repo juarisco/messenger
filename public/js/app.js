@@ -1765,8 +1765,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    variant: String,
-    conversation: Object
+    conversation: Object,
+    selected: Boolean
   },
   data: function data() {
     return {};
@@ -1778,6 +1778,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   computed: {
     lastTime: function lastTime() {
       return moment(this.conversation.last_time, "YYYY-MM-DD hh:mm:ss").locale("es").fromNow();
+    },
+    variant: function variant() {
+      return this.selected ? "secondary" : "";
     }
   }
 });
@@ -1801,15 +1804,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     conversations: Array
   },
   data: function data() {
-    return {};
+    return { selectedConversationId: null };
   },
   mounted: function mounted() {
     // console.log("Component mounted.");
@@ -1818,6 +1819,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   methods: {
     selectConversation: function selectConversation(conversation) {
       // console.log(conversation);
+      this.selectedConversationId = conversation.id;
       this.$emit("conversationSelected", conversation);
     }
   }
@@ -50027,7 +50029,10 @@ var render = function() {
     _vm._l(_vm.conversations, function(conversation) {
       return _c("contact-component", {
         key: conversation.id,
-        attrs: { conversation: conversation },
+        attrs: {
+          conversation: conversation,
+          selected: _vm.selectedConversationId === conversation.id
+        },
         nativeOn: {
           click: function($event) {
             _vm.selectConversation(conversation)
