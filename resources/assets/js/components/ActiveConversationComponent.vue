@@ -60,7 +60,11 @@ export default {
       newMessage: ""
     };
   },
-  mounted() {},
+  mounted() {
+    eventBus.$on("example", function(data) {
+      console.log("Ocurrió el evento example", data);
+    });
+  },
   methods: {
     postMessage() {
       const params = {

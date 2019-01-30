@@ -1698,7 +1698,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       newMessage: ""
     };
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    eventBus.$on("example", function (data) {
+      console.log("Ocurrió el evento example", data);
+    });
+  },
 
   methods: {
     postMessage: function postMessage() {
@@ -1821,6 +1825,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       // console.log(conversation);
       this.selectedConversationId = conversation.id;
       this.$emit("conversationSelected", conversation);
+
+      eventBus.$emit("example", conversation);
     }
   }
 });
@@ -62045,6 +62051,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __webpack_require__("./resources/assets/js/bootstrap.js");
 
 window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
+window.eventBus = new Vue();
 
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_bootstrap_vue__["a" /* default */]);
