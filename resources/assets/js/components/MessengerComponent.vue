@@ -2,14 +2,7 @@
   <b-container fluid style="height: calc(100vh - 56px);">
     <b-row no-gutters>
       <b-col cols="4">
-        <b-form class="my-3 mx-2">
-          <b-form-input
-            class="text-center"
-            type="text"
-            v-model="querySearch"
-            placeholder="Buscar contacto ..."
-          ></b-form-input>
-        </b-form>
+        <contact-form-component/>
 
         <contact-list-component/>
       </b-col>
@@ -36,7 +29,7 @@ export default {
     return {};
   },
   mounted() {
-    this.getConversations();
+    this.$store.dispatch("getConversations");
 
     Echo.private(`users.${this.user.id}`).listen("MessageSent", data => {
       // console.log(message);
@@ -78,17 +71,12 @@ export default {
       )
         this.$store.commit("addMessage", message);
     },
-    getConversations() {
-      axios.get("/api/conversations").then(response => {
-        // console.log(response.data);
-        this.conversations = response.data;
-      });
-    },
     changeStatus(user, status) {
-      const index = this.conversations.findIndex(conversation => {
+      const index = this.$store.state.conversations.findIndex(conversation => {
         return conversation.contact_id == user.id;
       });
-      if (index >= 0) this.$set(this.conversations[index], "online", status);
+      if (index >= 0)
+        this.$set(this.$store.state.conversations[index], "online", status);
     }
   },
   computed: {

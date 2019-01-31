@@ -23,6 +23,11 @@ Vue.use(Vuex);
  */
 
 Vue.component(
+  "contact-form-component",
+  require("./components/ContactFormComponent.vue")
+);
+
+Vue.component(
   "profile-form-component",
   require("./components/ProfileFormComponent.vue")
 );
@@ -70,6 +75,12 @@ const store = new Vuex.Store({
     },
     selectConversation(state, conversation) {
       state.selectedConversation = conversation;
+    },
+    newQuerySearch(state, newValue) {
+      state.querySearch = newValue;
+    },
+    newConversationsList(state, conversations) {
+      state.conversations = conversations;
     }
   },
   actions: {
@@ -80,10 +91,16 @@ const store = new Vuex.Store({
           context.commit("newMessagesList", response.data);
           context.commit("selectConversation", conversation);
         });
+    },
+    getConversations(context) {
+      axios.get("/api/conversations").then(response => {
+        context.commit("newConversationsList", response.data);
+      });
     }
   },
   getters: {
     conversationsFiltered(state) {
+      console.log("conversationFiltered fired");
       return state.conversations.filter(conversation =>
         conversation.contact_name
           .toLowerCase()
