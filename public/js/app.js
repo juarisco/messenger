@@ -1948,7 +1948,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       axios.get("/api/messages/?contact_id=" + this.selectedConversation.contact_id).then(function (response) {
         console.log(response.data);
-        _this2.$store.state.messages = response.data;
+        _this2.$store.commit("newMessagesList", response.data);
       });
     },
     addMessage: function addMessage(message) {
@@ -1961,7 +1961,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       conversation.last_message = author + ": " + message.content;
       conversation.last_time = message.created_at;
 
-      if (this.selectedConversation.contact_id == message.from_id || this.selectedConversation.contact_id == message.to_id) this.$store.state.messages.push(message);
+      if (this.selectedConversation.contact_id == message.from_id || this.selectedConversation.contact_id == message.to_id) this.$store.commit("addMessage", message);
     },
     getConversations: function getConversations() {
       var _this3 = this;
@@ -63101,6 +63101,14 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.component("active-conversation-compo
 var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
   state: {
     messages: []
+  },
+  mutations: {
+    newMessagesList: function newMessagesList(state, messages) {
+      state.messages = messages;
+    },
+    addMessage: function addMessage(state, message) {
+      state.messages.push(message);
+    }
   }
 });
 
