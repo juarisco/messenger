@@ -7,10 +7,14 @@
 require("./bootstrap");
 
 window.Vue = require("vue");
-window.eventBus = new Vue();
-
 import BootstrapVue from "bootstrap-vue";
+import Vue from "vue";
+import Vuex from "vuex";
+
 Vue.use(BootstrapVue);
+Vue.use(Vuex);
+
+// window.eventBus = new Vue();
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -50,8 +54,15 @@ Vue.component(
   require("./components/ActiveConversationComponent.vue")
 );
 
+const store = new Vuex.Store({
+  state: {
+    messages: []
+  }
+});
+
 const app = new Vue({
   el: "#app",
+  store,
   methods: {
     logout() {
       document.getElementById("logout-form").submit();

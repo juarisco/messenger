@@ -27,7 +27,7 @@ export default {
       this.selectedConversationId = conversation.id;
       this.$emit("conversationSelected", conversation);
 
-      eventBus.$emit("example", conversation);
+      // eventBus.$emit("example", conversation);
     }
   }
 };

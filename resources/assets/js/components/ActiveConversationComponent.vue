@@ -52,8 +52,7 @@ export default {
     contactId: Number,
     contactName: String,
     contactImage: String,
-    myImage: String,
-    messages: Array
+    myImage: String
   },
   data() {
     return {
@@ -61,9 +60,9 @@ export default {
     };
   },
   mounted() {
-    eventBus.$on("example", function(data) {
-      console.log("Ocurrió el evento example", data);
-    });
+    // eventBus.$on("example", function(data) {
+    //   console.log("Ocurrió el evento example", data);
+    // });
   },
   methods: {
     postMessage() {
@@ -84,6 +83,11 @@ export default {
     scrollToBottom() {
       const el = document.querySelector(".card-body-scroll");
       el.scrollTop = el.scrollHeight;
+    }
+  },
+  computed: {
+    messages() {
+      return this.$store.state.messages;
     }
   },
   updated() {
