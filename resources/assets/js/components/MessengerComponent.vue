@@ -11,7 +11,7 @@
           ></b-form-input>
         </b-form>
 
-        <contact-list-component :conversations="conversationsFiltered"/>
+        <contact-list-component/>
       </b-col>
       <b-col cols="8">
         <active-conversation-component
@@ -33,10 +33,7 @@ export default {
     user: Object
   },
   data() {
-    return {
-      conversations: [],
-      querySearch: ""
-    };
+    return {};
   },
   mounted() {
     this.getConversations();
@@ -100,13 +97,6 @@ export default {
     },
     myImageUrl() {
       return `/users/${this.user.image}`;
-    },
-    conversationsFiltered() {
-      return this.conversations.filter(conversation =>
-        conversation.contact_name
-          .toLowerCase()
-          .includes(this.querySearch.toLowerCase())
-      );
     }
   }
 };

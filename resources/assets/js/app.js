@@ -57,7 +57,9 @@ Vue.component(
 const store = new Vuex.Store({
   state: {
     messages: [],
-    selectedConversation: null
+    selectedConversation: null,
+    conversations: [],
+    querySearch: ""
   },
   mutations: {
     newMessagesList(state, messages) {
@@ -78,6 +80,15 @@ const store = new Vuex.Store({
           context.commit("newMessagesList", response.data);
           context.commit("selectConversation", conversation);
         });
+    }
+  },
+  getters: {
+    conversationsFiltered(state) {
+      return state.conversations.filter(conversation =>
+        conversation.contact_name
+          .toLowerCase()
+          .includes(state.querySearch.toLowerCase())
+      );
     }
   }
 });

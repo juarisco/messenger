@@ -1814,9 +1814,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    conversations: Array
-  },
   methods: {
     selectConversation: function selectConversation(conversation) {
       this.$store.dispatch("getMessages", conversation);
@@ -1830,6 +1827,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   computed: {
     selectedConversation: function selectedConversation() {
       return this.$store.state.selectedConversation;
+    },
+    conversationsFiltered: function conversationsFiltered() {
+      return this.$store.getters.conversationsFiltered;
     }
   }
 });
@@ -1903,10 +1903,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     user: Object
   },
   data: function data() {
-    return {
-      conversations: [],
-      querySearch: ""
-    };
+    return {};
   },
   mounted: function mounted() {
     var _this = this;
@@ -1966,13 +1963,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     myImageUrl: function myImageUrl() {
       return "/users/" + this.user.image;
-    },
-    conversationsFiltered: function conversationsFiltered() {
-      var _this3 = this;
-
-      return this.conversations.filter(function (conversation) {
-        return conversation.contact_name.toLowerCase().includes(_this3.querySearch.toLowerCase());
-      });
     }
   }
 });
@@ -17357,7 +17347,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -50019,7 +50009,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "b-list-group",
-    _vm._l(_vm.conversations, function(conversation) {
+    _vm._l(_vm.conversationsFiltered, function(conversation) {
       return _c("contact-component", {
         key: conversation.id,
         attrs: {
@@ -50237,9 +50227,7 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("contact-list-component", {
-                attrs: { conversations: _vm.conversationsFiltered }
-              })
+              _c("contact-list-component")
             ],
             1
           ),
@@ -63081,7 +63069,9 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.component("active-conversation-compo
 var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
   state: {
     messages: [],
-    selectedConversation: null
+    selectedConversation: null,
+    conversations: [],
+    querySearch: ""
   },
   mutations: {
     newMessagesList: function newMessagesList(state, messages) {
@@ -63099,6 +63089,13 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
       axios.get("/api/messages/?contact_id=" + conversation.contact_id).then(function (response) {
         context.commit("newMessagesList", response.data);
         context.commit("selectConversation", conversation);
+      });
+    }
+  },
+  getters: {
+    conversationsFiltered: function conversationsFiltered(state) {
+      return state.conversations.filter(function (conversation) {
+        return conversation.contact_name.toLowerCase().includes(state.querySearch.toLowerCase());
       });
     }
   }

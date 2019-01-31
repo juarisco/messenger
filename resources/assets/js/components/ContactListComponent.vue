@@ -1,7 +1,7 @@
 <template>
   <b-list-group>
     <contact-component
-      v-for="conversation in conversations"
+      v-for="conversation in conversationsFiltered"
       :key="conversation.id"
       :conversation="conversation"
       :selected="isSelected(conversation)"
@@ -12,9 +12,6 @@
 
 <script>
 export default {
-  props: {
-    conversations: Array
-  },
   methods: {
     selectConversation(conversation) {
       this.$store.dispatch("getMessages", conversation);
@@ -29,6 +26,9 @@ export default {
   computed: {
     selectedConversation() {
       return this.$store.state.selectedConversation;
+    },
+    conversationsFiltered() {
+      return this.$store.getters.conversationsFiltered;
     }
   }
 };
