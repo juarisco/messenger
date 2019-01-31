@@ -1817,20 +1817,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: {
     conversations: Array
   },
-  data: function data() {
-    return { selectedConversationId: null };
-  },
-  mounted: function mounted() {
-    // console.log("Component mounted.");
-  },
-
   methods: {
     selectConversation: function selectConversation(conversation) {
       // console.log(conversation);
-      this.selectedConversationId = conversation.id;
-      this.$emit("conversationSelected", conversation);
+      this.$store.commit("selectConversation", conversation);
+    },
+    isSelected: function isSelected(conversation) {
+      if (this.selectedConversation) return this.selectedConversation.id === conversation.id;
 
-      // eventBus.$emit("example", conversation);
+      return false;
+    }
+  },
+  computed: {
+    selectedConversation: function selectedConversation() {
+      return this.$store.state.selectedConversation;
     }
   }
 });
@@ -1898,9 +1898,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -1908,7 +1905,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   data: function data() {
     return {
-      selectedConversation: null,
       conversations: [],
       querySearch: ""
     };
@@ -1938,11 +1934,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
-    changeActiveConversation: function changeActiveConversation(conversation) {
-      // console.log("Nueva conversación seleccionada", conversation);
-      this.selectedConversation = conversation;
-      this.getMessages();
-    },
     getMessages: function getMessages() {
       var _this2 = this;
 
@@ -1979,6 +1970,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   computed: {
+    selectedConversation: function selectedConversation() {
+      return this.$store.state.selectedConversation;
+    },
     myImageUrl: function myImageUrl() {
       return "/users/" + this.user.image;
     },
@@ -17372,7 +17366,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -50039,7 +50033,7 @@ var render = function() {
         key: conversation.id,
         attrs: {
           conversation: conversation,
-          selected: _vm.selectedConversationId === conversation.id
+          selected: _vm.isSelected(conversation)
         },
         nativeOn: {
           click: function($event) {
@@ -50253,12 +50247,7 @@ var render = function() {
               ),
               _vm._v(" "),
               _c("contact-list-component", {
-                attrs: { conversations: _vm.conversationsFiltered },
-                on: {
-                  conversationSelected: function($event) {
-                    _vm.changeActiveConversation($event)
-                  }
-                }
+                attrs: { conversations: _vm.conversationsFiltered }
               })
             ],
             1
@@ -63100,7 +63089,8 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.component("active-conversation-compo
 
 var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
   state: {
-    messages: []
+    messages: [],
+    selectedConversation: null
   },
   mutations: {
     newMessagesList: function newMessagesList(state, messages) {
@@ -63108,6 +63098,9 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
     },
     addMessage: function addMessage(state, message) {
       state.messages.push(message);
+    },
+    selectConversation: function selectConversation(state, conversation) {
+      state.selectedConversation = conversation;
     }
   }
 });

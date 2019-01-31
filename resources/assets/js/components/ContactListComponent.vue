@@ -4,7 +4,7 @@
       v-for="conversation in conversations"
       :key="conversation.id"
       :conversation="conversation"
-      :selected="selectedConversationId === conversation.id"
+      :selected="isSelected(conversation)"
       @click.native="selectConversation(conversation)"
     ></contact-component>
   </b-list-group>
@@ -15,19 +15,21 @@ export default {
   props: {
     conversations: Array
   },
-  data() {
-    return { selectedConversationId: null };
-  },
-  mounted() {
-    // console.log("Component mounted.");
-  },
   methods: {
     selectConversation(conversation) {
       // console.log(conversation);
-      this.selectedConversationId = conversation.id;
-      this.$emit("conversationSelected", conversation);
+      this.$store.commit("selectConversation", conversation);
+    },
+    isSelected(conversation) {
+      if (this.selectedConversation)
+        return this.selectedConversation.id === conversation.id;
 
-      // eventBus.$emit("example", conversation);
+      return false;
+    }
+  },
+  computed: {
+    selectedConversation() {
+      return this.$store.state.selectedConversation;
     }
   }
 };
