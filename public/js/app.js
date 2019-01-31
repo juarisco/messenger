@@ -1819,8 +1819,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     selectConversation: function selectConversation(conversation) {
-      // console.log(conversation);
-      this.$store.commit("selectConversation", conversation);
+      this.$store.dispatch("getMessages", conversation);
     },
     isSelected: function isSelected(conversation) {
       if (this.selectedConversation) return this.selectedConversation.id === conversation.id;
@@ -1934,14 +1933,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
-    getMessages: function getMessages() {
-      var _this2 = this;
-
-      axios.get("/api/messages/?contact_id=" + this.selectedConversation.contact_id).then(function (response) {
-        console.log(response.data);
-        _this2.$store.commit("newMessagesList", response.data);
-      });
-    },
     addMessage: function addMessage(message) {
       var conversation = this.conversations.find(function (conversation) {
         return conversation.contact_id == message.from_id || conversation.contact_id == message.to_id;
@@ -1955,11 +1946,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (this.selectedConversation.contact_id == message.from_id || this.selectedConversation.contact_id == message.to_id) this.$store.commit("addMessage", message);
     },
     getConversations: function getConversations() {
-      var _this3 = this;
+      var _this2 = this;
 
       axios.get("/api/conversations").then(function (response) {
         // console.log(response.data);
-        _this3.conversations = response.data;
+        _this2.conversations = response.data;
       });
     },
     changeStatus: function changeStatus(user, status) {
@@ -1977,10 +1968,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return "/users/" + this.user.image;
     },
     conversationsFiltered: function conversationsFiltered() {
-      var _this4 = this;
+      var _this3 = this;
 
       return this.conversations.filter(function (conversation) {
-        return conversation.contact_name.toLowerCase().includes(_this4.querySearch.toLowerCase());
+        return conversation.contact_name.toLowerCase().includes(_this3.querySearch.toLowerCase());
       });
     }
   }
@@ -17366,7 +17357,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -63101,6 +63092,14 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
     },
     selectConversation: function selectConversation(state, conversation) {
       state.selectedConversation = conversation;
+    }
+  },
+  actions: {
+    getMessages: function getMessages(context, conversation) {
+      axios.get("/api/messages/?contact_id=" + conversation.contact_id).then(function (response) {
+        context.commit("newMessagesList", response.data);
+        context.commit("selectConversation", conversation);
+      });
     }
   }
 });

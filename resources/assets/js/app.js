@@ -69,6 +69,16 @@ const store = new Vuex.Store({
     selectConversation(state, conversation) {
       state.selectedConversation = conversation;
     }
+  },
+  actions: {
+    getMessages(context, conversation) {
+      axios
+        .get(`/api/messages/?contact_id=${conversation.contact_id}`)
+        .then(response => {
+          context.commit("newMessagesList", response.data);
+          context.commit("selectConversation", conversation);
+        });
+    }
   }
 });
 
