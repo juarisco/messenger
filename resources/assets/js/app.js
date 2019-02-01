@@ -8,8 +8,12 @@ require("./bootstrap");
 
 window.Vue = require("vue");
 import BootstrapVue from "bootstrap-vue";
+import VueRouter from "vue-router";
+import ExampleComponent from "./components/ExampleComponent.vue";
+import MessengerComponent from "./components/MessengerComponent.vue";
 import store from "./store";
 
+Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 
 // window.eventBus = new Vue();
@@ -32,10 +36,10 @@ Vue.component(
 
 Vue.component("status-component", require("./components/StatusComponent.vue"));
 
-Vue.component(
+/*Vue.component(
   "messenger-component",
   require("./components/MessengerComponent.vue")
-);
+);*/
 
 Vue.component(
   "message-conversation-component",
@@ -57,9 +61,21 @@ Vue.component(
   require("./components/ActiveConversationComponent.vue")
 );
 
+const routes = [
+  { path: "/chat", component: MessengerComponent },
+  { path: "/chat/:conversationId", component: MessengerComponent },
+  { path: "/example", component: ExampleComponent }
+];
+
+const router = new VueRouter({
+  routes,
+  mode: "history"
+});
+
 const app = new Vue({
   el: "#app",
   store,
+  router,
   methods: {
     logout() {
       document.getElementById("logout-form").submit();

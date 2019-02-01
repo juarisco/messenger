@@ -21,7 +21,7 @@
 
         <b-navbar toggleable type="dark" variant="primary">
             <b-navbar-toggle target="nav_text_collapse"></b-navbar-toggle>
-            <b-navbar-brand href="{{ url('/home') }}">{{ config('app.name', 'Laravel') }}</b-navbar-brand>
+            <b-navbar-brand href="{{ route('chat') }}">{{ config('app.name', 'Laravel') }}</b-navbar-brand>
             <b-collapse is-nav id="nav_text_collapse">
                 <!-- Right Side Of Navbar -->
                 <b-navbar-nav class="ml-auto">
