@@ -1826,8 +1826,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     selectConversation: function selectConversation(conversation) {
-      this.$router.push("/chat/" + conversation.id);
-      this.$store.dispatch("getMessages", conversation);
+      var _this = this;
+
+      this.$router.push("/chat/" + conversation.id, function () {
+        _this.$store.dispatch("getMessages", conversation);
+      });
     },
     isSelected: function isSelected(conversation) {
       if (this.selectedConversation) return this.selectedConversation.id === conversation.id;
@@ -1919,7 +1922,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     var _this = this;
 
     this.$store.commit("setUser", this.user);
-    this.$store.dispatch("getConversations");
+    this.$store.dispatch("getConversations").then(function () {
+      var conversationId = _this.$route.params.conversationId;
+
+      if (conversationId) {
+        var conversation = _this.$store.getters.getConversationById(conversationId);
+        // console.log("conversation", conversation);
+        _this.$store.dispatch("getMessages", conversation);
+      }
+    });
 
     Echo.private("users." + this.user.id).listen("MessageSent", function (data) {
       // console.log(message);
@@ -17335,7 +17346,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -66385,13 +66396,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
   },
   actions: {
     getMessages: function getMessages(context, conversation) {
-      axios.get("/api/messages/?contact_id=" + conversation.contact_id).then(function (response) {
+      return axios.get("/api/messages/?contact_id=" + conversation.contact_id).then(function (response) {
         context.commit("newMessagesList", response.data);
         context.commit("selectConversation", conversation);
       });
     },
     getConversations: function getConversations(context) {
-      axios.get("/api/conversations").then(function (response) {
+      return axios.get("/api/conversations").then(function (response) {
         context.commit("newConversationsList", response.data);
       });
     },
@@ -66400,7 +66411,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
         to_id: context.state.selectedConversation.contact_id,
         content: newMessage
       };
-      axios.post("/api/messages", params).then(function (response) {
+      return axios.post("/api/messages", params).then(function (response) {
         if (response.data.success) {
           newMessage = "";
           var message = response.data.message;
@@ -66416,6 +66427,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
       return state.conversations.filter(function (conversation) {
         return conversation.contact_name.toLowerCase().includes(state.querySearch.toLowerCase());
       });
+    },
+    getConversationById: function getConversationById(state) {
+      return function (conversationId) {
+        return state.conversations.find(function (conversation) {
+          return conversation.id == conversationId;
+        });
+      };
     }
   }
 }));

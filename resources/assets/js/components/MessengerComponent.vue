@@ -22,7 +22,17 @@ export default {
   },
   mounted() {
     this.$store.commit("setUser", this.user);
-    this.$store.dispatch("getConversations");
+    this.$store.dispatch("getConversations").then(() => {
+      const conversationId = this.$route.params.conversationId;
+
+      if (conversationId) {
+        const conversation = this.$store.getters.getConversationById(
+          conversationId
+        );
+        // console.log("conversation", conversation);
+        this.$store.dispatch("getMessages", conversation);
+      }
+    });
 
     Echo.private(`users.${this.user.id}`).listen("MessageSent", data => {
       // console.log(message);

@@ -51,7 +51,7 @@ export default new Vuex.Store({
   },
   actions: {
     getMessages(context, conversation) {
-      axios
+      return axios
         .get(`/api/messages/?contact_id=${conversation.contact_id}`)
         .then(response => {
           context.commit("newMessagesList", response.data);
@@ -59,7 +59,7 @@ export default new Vuex.Store({
         });
     },
     getConversations(context) {
-      axios.get("/api/conversations").then(response => {
+      return axios.get("/api/conversations").then(response => {
         context.commit("newConversationsList", response.data);
       });
     },
@@ -68,7 +68,7 @@ export default new Vuex.Store({
         to_id: context.state.selectedConversation.contact_id,
         content: newMessage
       };
-      axios.post("/api/messages", params).then(response => {
+      return axios.post("/api/messages", params).then(response => {
         if (response.data.success) {
           newMessage = "";
           const message = response.data.message;
@@ -86,6 +86,13 @@ export default new Vuex.Store({
           .toLowerCase()
           .includes(state.querySearch.toLowerCase())
       );
+    },
+    getConversationById(state) {
+      return function(conversationId) {
+        return state.conversations.find(
+          conversation => conversation.id == conversationId
+        );
+      };
     }
   }
 });
