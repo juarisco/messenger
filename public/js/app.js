@@ -1686,12 +1686,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    contactId: Number,
-    contactName: String,
-    contactImage: String,
-    myImage: String
-  },
   data: function data() {
     return {
       newMessage: ""
@@ -1705,21 +1699,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     postMessage: function postMessage() {
-      var _this = this;
-
-      var params = {
-        to_id: this.contactId,
-        content: this.newMessage
-      };
-      axios.post("/api/messages", params).then(function (response) {
-        if (response.data.success) {
-          // console.log(response.data);
-          _this.newMessage = "";
-          var message = response.data.message;
-          message.written_by_me = true;
-          _this.$emit("messageCreated", message);
-        }
-      });
+      this.$store.dispatch("postMessage", this.newMessage);
     },
     scrollToBottom: function scrollToBottom() {
       var el = document.querySelector(".card-body-scroll");
@@ -1727,13 +1707,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   computed: {
+    myImage: function myImage() {
+      return "/users/" + this.$store.state.user.image;
+    },
+    selectedConversation: function selectedConversation() {
+      return this.$store.state.selectedConversation;
+    },
     messages: function messages() {
       return this.$store.state.messages;
     }
   },
   updated: function updated() {
     this.scrollToBottom();
-    console.log("messages ha cambiado");
   }
 });
 
@@ -1914,14 +1899,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -1933,6 +1910,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mounted: function mounted() {
     var _this = this;
 
+    this.$store.commit("setUser", this.user);
     this.$store.dispatch("getConversations");
 
     Echo.private("users." + this.user.id).listen("MessageSent", function (data) {
@@ -1955,18 +1933,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
-    addMessage: function addMessage(message) {
-      var conversation = this.conversations.find(function (conversation) {
-        return conversation.contact_id == message.from_id || conversation.contact_id == message.to_id;
-      });
-
-      var author = this.user.id === message.from_id ? "Tú" : conversation.contact_name;
-
-      conversation.last_message = author + ": " + message.content;
-      conversation.last_time = message.created_at;
-
-      if (this.selectedConversation.contact_id == message.from_id || this.selectedConversation.contact_id == message.to_id) this.$store.commit("addMessage", message);
-    },
     changeStatus: function changeStatus(user, status) {
       var index = this.$store.state.conversations.findIndex(function (conversation) {
         return conversation.contact_id == user.id;
@@ -1977,9 +1943,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   computed: {
     selectedConversation: function selectedConversation() {
       return this.$store.state.selectedConversation;
-    },
-    myImageUrl: function myImageUrl() {
-      return "/users/" + this.user.image;
     }
   }
 });
@@ -17364,7 +17327,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -50252,19 +50215,7 @@ var render = function() {
             { attrs: { cols: "8" } },
             [
               _vm.selectedConversation
-                ? _c("active-conversation-component", {
-                    attrs: {
-                      "contact-id": _vm.selectedConversation.contact_id,
-                      "contact-name": _vm.selectedConversation.contact_name,
-                      "contact-image": _vm.selectedConversation.contact_image,
-                      "my-image": _vm.myImageUrl
-                    },
-                    on: {
-                      messageCreated: function($event) {
-                        _vm.addMessage($event)
-                      }
-                    }
-                  })
+                ? _c("active-conversation-component")
                 : _vm._e()
             ],
             1
@@ -50436,8 +50387,7 @@ var render = function() {
               attrs: {
                 "no-body": "",
                 "footer-bg-variant": "light",
-                "footer-border-variant": "dark",
-                title: "Conversación activa"
+                "footer-border-variant": "dark"
               }
             },
             [
@@ -50453,7 +50403,7 @@ var render = function() {
                         "written-by-me": message.written_by_me,
                         image: message.written_by_me
                           ? _vm.myImage
-                          : _vm.contactImage
+                          : _vm.selectedConversation.contact_image
                       }
                     },
                     [_vm._v(_vm._s(message.content))]
@@ -50535,14 +50485,14 @@ var render = function() {
           _c("b-img", {
             staticClass: "m-1",
             attrs: {
-              src: _vm.contactImage,
+              src: _vm.selectedConversation.contact_image,
               rounded: "circle",
               width: "60",
               height: "60"
             }
           }),
           _vm._v(" "),
-          _c("p", [_vm._v(_vm._s(_vm.contactName))]),
+          _c("p", [_vm._v(_vm._s(_vm.selectedConversation.contact_name))]),
           _vm._v(" "),
           _c("hr"),
           _vm._v(" "),
@@ -63153,14 +63103,29 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
     messages: [],
     selectedConversation: null,
     conversations: [],
-    querySearch: ""
+    querySearch: "",
+    user: null
   },
   mutations: {
+    setUser: function setUser(state, user) {
+      state.user = user;
+    },
     newMessagesList: function newMessagesList(state, messages) {
       state.messages = messages;
     },
     addMessage: function addMessage(state, message) {
-      state.messages.push(message);
+      var conversation = state.conversations.find(function (conversation) {
+        return conversation.contact_id == message.from_id || conversation.contact_id == message.to_id;
+      });
+
+      var author = state.user.id === message.from_id ? "Tú" : conversation.contact_name;
+
+      conversation.last_message = author + ": " + message.content;
+      conversation.last_time = message.created_at;
+
+      if (state.selectedConversation.contact_id == message.from_id || state.selectedConversation.contact_id == message.to_id)
+        // state.$store.commit("addMessage", message);
+        state.messages.push(message);
     },
     selectConversation: function selectConversation(state, conversation) {
       state.selectedConversation = conversation;
@@ -63182,6 +63147,20 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
     getConversations: function getConversations(context) {
       axios.get("/api/conversations").then(function (response) {
         context.commit("newConversationsList", response.data);
+      });
+    },
+    postMessage: function postMessage(context, newMessage) {
+      var params = {
+        to_id: context.state.selectedConversation.contact_id,
+        content: newMessage
+      };
+      axios.post("/api/messages", params).then(function (response) {
+        if (response.data.success) {
+          newMessage = "";
+          var message = response.data.message;
+          message.written_by_me = true;
+          context.commit("addMessage", message);
+        }
       });
     }
   },

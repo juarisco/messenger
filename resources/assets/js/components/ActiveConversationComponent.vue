@@ -1,19 +1,13 @@
 <template>
   <b-row>
     <b-col cols="8">
-      <b-card
-        no-body
-        footer-bg-variant="light"
-        footer-border-variant="dark"
-        title="Conversación activa"
-        class="h-100"
-      >
+      <b-card no-body footer-bg-variant="light" footer-border-variant="dark" class="h-100">
         <b-card-body class="card-body-scroll">
           <message-conversation-component
             v-for="message in messages"
             :key="message.id"
             :written-by-me="message.written_by_me"
-            :image="message.written_by_me ? myImage : contactImage"
+            :image="message.written_by_me ? myImage : selectedConversation.contact_image"
           >{{ message.content }}</message-conversation-component>
         </b-card-body>
 
@@ -38,8 +32,14 @@
       </b-card>
     </b-col>
     <b-col cols="4">
-      <b-img :src="contactImage" rounded="circle" width="60" height="60" class="m-1"/>
-      <p>{{ contactName }}</p>
+      <b-img
+        :src="selectedConversation.contact_image"
+        rounded="circle"
+        width="60"
+        height="60"
+        class="m-1"
+      />
+      <p>{{ selectedConversation.contact_name }}</p>
       <hr>
       <b-form-checkbox>Desactivar notificaciones</b-form-checkbox>
     </b-col>
@@ -48,12 +48,6 @@
 
 <script>
 export default {
-  props: {
-    contactId: Number,
-    contactName: String,
-    contactImage: String,
-    myImage: String
-  },
   data() {
     return {
       newMessage: ""
@@ -66,19 +60,7 @@ export default {
   },
   methods: {
     postMessage() {
-      const params = {
-        to_id: this.contactId,
-        content: this.newMessage
-      };
-      axios.post("/api/messages", params).then(response => {
-        if (response.data.success) {
-          // console.log(response.data);
-          this.newMessage = "";
-          const message = response.data.message;
-          message.written_by_me = true;
-          this.$emit("messageCreated", message);
-        }
-      });
+      this.$store.dispatch("postMessage", this.newMessage);
     },
     scrollToBottom() {
       const el = document.querySelector(".card-body-scroll");
@@ -86,13 +68,18 @@ export default {
     }
   },
   computed: {
+    myImage() {
+      return `/users/${this.$store.state.user.image}`;
+    },
+    selectedConversation() {
+      return this.$store.state.selectedConversation;
+    },
     messages() {
       return this.$store.state.messages;
     }
   },
   updated() {
     this.scrollToBottom();
-    console.log("messages ha cambiado");
   }
 };
 </script>

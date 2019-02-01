@@ -3,18 +3,10 @@
     <b-row no-gutters>
       <b-col cols="4">
         <contact-form-component/>
-
         <contact-list-component/>
       </b-col>
       <b-col cols="8">
-        <active-conversation-component
-          v-if="selectedConversation"
-          :contact-id="selectedConversation.contact_id"
-          :contact-name="selectedConversation.contact_name"
-          :contact-image="selectedConversation.contact_image"
-          :my-image="myImageUrl"
-          @messageCreated="addMessage($event)"
-        />
+        <active-conversation-component v-if="selectedConversation"/>
       </b-col>
     </b-row>
   </b-container>
@@ -29,6 +21,7 @@ export default {
     return {};
   },
   mounted() {
+    this.$store.commit("setUser", this.user);
     this.$store.dispatch("getConversations");
 
     Echo.private(`users.${this.user.id}`).listen("MessageSent", data => {
@@ -51,26 +44,6 @@ export default {
       });
   },
   methods: {
-    addMessage(message) {
-      const conversation = this.conversations.find(conversation => {
-        return (
-          conversation.contact_id == message.from_id ||
-          conversation.contact_id == message.to_id
-        );
-      });
-
-      const author =
-        this.user.id === message.from_id ? "Tú" : conversation.contact_name;
-
-      conversation.last_message = `${author}: ${message.content}`;
-      conversation.last_time = message.created_at;
-
-      if (
-        this.selectedConversation.contact_id == message.from_id ||
-        this.selectedConversation.contact_id == message.to_id
-      )
-        this.$store.commit("addMessage", message);
-    },
     changeStatus(user, status) {
       const index = this.$store.state.conversations.findIndex(conversation => {
         return conversation.contact_id == user.id;
@@ -82,9 +55,6 @@ export default {
   computed: {
     selectedConversation() {
       return this.$store.state.selectedConversation;
-    },
-    myImageUrl() {
-      return `/users/${this.user.image}`;
     }
   }
 };
