@@ -1761,13 +1761,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     conversation: Object,
     selected: Boolean
   },
-  data: function data() {
-    return {};
-  },
-  mounted: function mounted() {
-    console.log("Component mounted.");
-  },
-
   computed: {
     lastTime: function lastTime() {
       return moment(this.conversation.last_time, "YYYY-MM-DD hh:mm:ss").locale("es").fromNow();
