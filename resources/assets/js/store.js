@@ -52,7 +52,7 @@ export default new Vuex.Store({
   actions: {
     getMessages(context, conversation) {
       return axios
-        .get(`/api/messages/?contact_id=${conversation.contact_id}`)
+        .get(`/api/messages?contact_id=${conversation.contact_id}`)
         .then(response => {
           context.commit("newMessagesList", response.data);
           context.commit("selectConversation", conversation);

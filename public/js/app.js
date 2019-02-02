@@ -1699,7 +1699,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     postMessage: function postMessage() {
-      this.$store.dispatch("postMessage", this.newMessage);
+      var _this = this;
+
+      this.$store.dispatch("postMessage", this.newMessage).then(function () {
+        _this.newMessage = "";
+      });
     },
     scrollToBottom: function scrollToBottom() {
       var el = document.querySelector(".card-body-scroll");
@@ -1933,7 +1937,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     });
 
     Echo.private("users." + this.user.id).listen("MessageSent", function (data) {
-      // console.log(message);
       var message = data.message;
       message.written_by_me = false;
 
@@ -1957,6 +1960,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return conversation.contact_id == user.id;
       });
       if (index >= 0) this.$set(this.$store.state.conversations[index], "online", status);
+    },
+    addMessage: function addMessage(message) {
+      this.$store.commit("addMessage", message);
     }
   },
   computed: {
@@ -17346,7 +17352,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -66396,7 +66402,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
   },
   actions: {
     getMessages: function getMessages(context, conversation) {
-      return axios.get("/api/messages/?contact_id=" + conversation.contact_id).then(function (response) {
+      return axios.get("/api/messages?contact_id=" + conversation.contact_id).then(function (response) {
         context.commit("newMessagesList", response.data);
         context.commit("selectConversation", conversation);
       });

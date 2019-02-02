@@ -60,7 +60,9 @@ export default {
   },
   methods: {
     postMessage() {
-      this.$store.dispatch("postMessage", this.newMessage);
+      this.$store.dispatch("postMessage", this.newMessage).then(() => {
+        this.newMessage = "";
+      });
     },
     scrollToBottom() {
       const el = document.querySelector(".card-body-scroll");

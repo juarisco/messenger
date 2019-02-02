@@ -35,7 +35,6 @@ export default {
     });
 
     Echo.private(`users.${this.user.id}`).listen("MessageSent", data => {
-      // console.log(message);
       const message = data.message;
       message.written_by_me = false;
 
@@ -60,6 +59,9 @@ export default {
       });
       if (index >= 0)
         this.$set(this.$store.state.conversations[index], "online", status);
+    },
+    addMessage(message) {
+      this.$store.commit("addMessage", message);
     }
   },
   computed: {
