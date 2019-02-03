@@ -53,11 +53,6 @@ export default {
       newMessage: ""
     };
   },
-  mounted() {
-    // eventBus.$on("example", function(data) {
-    //   console.log("Ocurrió el evento example", data);
-    // });
-  },
   methods: {
     postMessage() {
       this.$store.dispatch("postMessage", this.newMessage).then(() => {

@@ -1691,11 +1691,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       newMessage: ""
     };
   },
-  mounted: function mounted() {
-    // eventBus.$on("example", function(data) {
-    //   console.log("Ocurrió el evento example", data);
-    // });
-  },
 
   methods: {
     postMessage: function postMessage() {
@@ -1919,9 +1914,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: {
     user: Object
   },
-  data: function data() {
-    return {};
-  },
   mounted: function mounted() {
     var _this = this;
 
@@ -1939,7 +1931,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     Echo.private("users." + this.user.id).listen("MessageSent", function (data) {
       var message = data.message;
       message.written_by_me = false;
-
       _this.addMessage(message);
     });
 
@@ -1955,14 +1946,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
+    addMessage: function addMessage(message) {
+      this.$store.commit("addMessage", message);
+    },
     changeStatus: function changeStatus(user, status) {
       var index = this.$store.state.conversations.findIndex(function (conversation) {
         return conversation.contact_id == user.id;
       });
       if (index >= 0) this.$set(this.$store.state.conversations[index], "online", status);
-    },
-    addMessage: function addMessage(message) {
-      this.$store.commit("addMessage", message);
     }
   },
   computed: {
@@ -17352,7 +17343,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -66386,9 +66377,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
       conversation.last_message = author + ": " + message.content;
       conversation.last_time = message.created_at;
 
-      if (state.selectedConversation.contact_id == message.from_id || state.selectedConversation.contact_id == message.to_id)
-        // state.$store.commit("addMessage", message);
+      if (state.selectedConversation.contact_id == message.from_id || state.selectedConversation.contact_id == message.to_id) {
+        console.log(message);
         state.messages.push(message);
+      }
     },
     selectConversation: function selectConversation(state, conversation) {
       state.selectedConversation = conversation;
@@ -66403,8 +66395,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
   actions: {
     getMessages: function getMessages(context, conversation) {
       return axios.get("/api/messages?contact_id=" + conversation.contact_id).then(function (response) {
-        context.commit("newMessagesList", response.data);
         context.commit("selectConversation", conversation);
+        context.commit("newMessagesList", response.data);
       });
     },
     getConversations: function getConversations(context) {

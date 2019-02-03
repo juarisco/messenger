@@ -35,9 +35,10 @@ export default new Vuex.Store({
       if (
         state.selectedConversation.contact_id == message.from_id ||
         state.selectedConversation.contact_id == message.to_id
-      )
-        // state.$store.commit("addMessage", message);
+      ) {
+        console.log(message);
         state.messages.push(message);
+      }
     },
     selectConversation(state, conversation) {
       state.selectedConversation = conversation;
@@ -54,8 +55,8 @@ export default new Vuex.Store({
       return axios
         .get(`/api/messages?contact_id=${conversation.contact_id}`)
         .then(response => {
-          context.commit("newMessagesList", response.data);
           context.commit("selectConversation", conversation);
+          context.commit("newMessagesList", response.data);
         });
     },
     getConversations(context) {

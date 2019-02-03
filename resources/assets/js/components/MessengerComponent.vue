@@ -17,9 +17,6 @@ export default {
   props: {
     user: Object
   },
-  data() {
-    return {};
-  },
   mounted() {
     this.$store.commit("setUser", this.user);
     this.$store.dispatch("getConversations").then(() => {
@@ -37,7 +34,6 @@ export default {
     Echo.private(`users.${this.user.id}`).listen("MessageSent", data => {
       const message = data.message;
       message.written_by_me = false;
-
       this.addMessage(message);
     });
 
@@ -53,15 +49,15 @@ export default {
       });
   },
   methods: {
+    addMessage(message) {
+      this.$store.commit("addMessage", message);
+    },
     changeStatus(user, status) {
       const index = this.$store.state.conversations.findIndex(conversation => {
         return conversation.contact_id == user.id;
       });
       if (index >= 0)
         this.$set(this.$store.state.conversations[index], "online", status);
-    },
-    addMessage(message) {
-      this.$store.commit("addMessage", message);
     }
   },
   computed: {
